@@ -1,0 +1,5 @@
+include requirements.txt
+include README.md
+include Makefile
+include src/titanic_pipeline/data/titanic.csv
+recursive-include tests *.py

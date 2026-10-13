@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pipeline_sklearn"
+version = "1.4.0"
+description = "Pipeline reproducible de scikit-learn sobre el dataset Titanic, expuesto mediante entry points"
+readme = "README.md"
+requires-python = ">=3.10"
+dynamic = ["dependencies"]
+
+# Extras del Taller 3: tracking de experimentos con MLflow (pip install -e ".[tracking]")
+[project.optional-dependencies]
+tracking = ["mlflow>=3.17,<4", "matplotlib>=3.7", "jupyter>=1.0"]
+
+# Grupo console_scripts: el instalador crea un ejecutable por cada línea.
+[project.scripts]
+titanic-pipeline = "titanic_pipeline.cli:main"
+titanic-extract  = "titanic_pipeline.cli:extraer"
+titanic-clean    = "titanic_pipeline.cli:limpiar"
+titanic-train    = "titanic_pipeline.cli:entrenar"
+titanic-predict  = "titanic_pipeline.cli:predecir"
+titanic-models   = "titanic_pipeline.cli:listar_modelos"
+
+# Grupo propio (plugins): modelos que el pipeline descubre en tiempo de ejecución.
+[project.entry-points."titanic_pipeline.modelos"]
+random_forest       = "titanic_pipeline.modelos:random_forest"
+logistic_regression = "titanic_pipeline.modelos:regresion_logistica"
+gradient_boosting   = "titanic_pipeline.modelos:gradient_boosting"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+titanic_pipeline = ["data/*.csv"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
